@@ -319,8 +319,7 @@ class Juego:
         print("Este es tu tablero")
         print(self.humano.tablero)
         self.maquina.colocar_barcos() 
-        print("Tablero de Skinet")
-
+    
         respuesta = int(input("¿Quién quieres que empiece primero: (1)Tú, (2)Máquina, (0)Aleatorio? "))
         if respuesta == 1:
             self.jugar(True)
