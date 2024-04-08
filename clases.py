@@ -138,19 +138,15 @@ class Humano(Jugador):
         enemigo: Instancia del jugador enemigo.
         --> return: True si el ataque resultó en un acierto, False en caso contrario.
         """
-
         acierto = False  # Con esta variable controlamos si hay acierto o no
-
         while True:  # mientras sigamos acertando, repetiremos
             print(self.tab_disparos)
             fila = int(input("Fila a disparar? (Entre 0 y 9): "))
             columna = int(input("Columna a disparar? (Entre 0 y 9): "))
             coord_disparo = (fila, columna)
-
             if coord_disparo in self.coord_disp: # Comprobacion de coordenadas repetidas
                 print("Capitán, aquí ya hemos bombardeado previamente. Deme otras coordenadas:")
                 continue  # Vuelve al inicio del bucle si las coordenadas ya se han utilizado
-
             self.coord_disp.append(coord_disparo)
 
             for barco in enemigo.coord_barcos:
@@ -171,7 +167,8 @@ class Humano(Jugador):
                 enemigo.tablero[fila, columna] = "a"
             break  # Salimos del bucle while luego de un disparo, acertado o no
 
-        return acierto  # Retornamos si ha sido un acierto para determinar si se sigue jugando o cambia el turno
+        return acierto  
+        # Retornamos si ha sido un acierto para determinar si se sigue jugando o cambia el turno
 
 class Maquina(Jugador):
     """
@@ -217,7 +214,7 @@ class Maquina(Jugador):
                 break  # Salimos del bucle while luego de un disparo, acertado o no
         return acierto  # Retornamos si ha sido un acierto para determinar si se sigue jugando o cambia el turno
 
-class Maquina_de_matar(Maquina):
+class Maquina_de_matar(Jugador):
     """
     Representa a un jugador no carnico de IA avanzada, cuyo ataque se realiza de forma aleatoria hasta que acierta en un objetivo, 
     en cuyo caso lo perseguira hasta su exterminio.
@@ -303,9 +300,9 @@ class Juego:
         """
         dificultad = int(input("Elige el nivel de : Fácil (1) o Difícil (2): "))
         if dificultad == 1:
-            self.maquina = Maquina_de_matar("Skinet")
-        elif dificultad == 2:
             self.maquina = Maquina("Skinet")
+        elif dificultad == 2:
+            self.maquina = Maquina_de_matar("Skinet")
         else:
             # Si se introduce un valor inválido, por defecto se elige la dificultad fácil
             print("Dificultad no reconocida. Seleccionando dificultad Fácil por defecto.")
@@ -321,9 +318,8 @@ class Juego:
         self.humano.colocar_barcos()
         print("Este es tu tablero")
         print(self.humano.tablero)
-        self.maquina.colocar_barcos() #PTE: quitar cuando y esté todo ok.
+        self.maquina.colocar_barcos() 
         print("Tablero de Skinet")
-        print(self.maquina.tablero)
 
         respuesta = int(input("¿Quién quieres que empiece primero: (1)Tú, (2)Máquina, (0)Aleatorio? "))
         if respuesta == 1:
