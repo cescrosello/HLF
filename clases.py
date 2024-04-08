@@ -285,6 +285,7 @@ class Maquina_de_matar(Maquina):
                 break
         return acierto
 
+
 class Juego:
     """
     Gestiona el flujo del juego, manejando los jugadores y la lógica de juego principal.
