@@ -14,8 +14,8 @@ class Jugador:
         """
         self.id_jugador = id_jugador
         self.sizes = sizes
-        self.tablero = np.full((10, 10), " ") # tablero con nuestros barcos
-        self.tab_disparos = np.full((10, 10), " ") # tablero de seg de nuestros disparos
+        self.tablero = np.full((10, 10), "@") # tablero con nuestros barcos
+        self.tab_disparos = np.full((10, 10), "#") # tablero de seg de nuestros disparos
         self.coord_disp = [] # coordenadas de donde disparamos ( PTE )
         self.coord_barcos = [] # lista de diccionarios de cada barco
 
@@ -33,7 +33,7 @@ class Jugador:
         """
         Reinicia el tablero del jugador y la lista de coordenadas de los barcos.
         """
-        self.tablero = np.full((10, 10), " ")
+        self.tablero = np.full((10, 10), "@")
         self.coord_barcos = []
 
     def adyacencia(self, inicio, fin, orientacion):
@@ -123,6 +123,50 @@ class Jugador:
             if not all(barco['golpes']): #comprobamos la lista de boleanos de cada barco
                 return False
         return True
+    
+    def print_tablero_coloreado(self):
+        """
+        Printea el tablero coloreado con codificacion  ANSI
+        """
+        color_rojo = '\033[91m'  # B
+        color_naranja = '\033[93m'  # X, usando amarillo como naranja
+        color_azul_claro = '\033[96m'  # a
+        color_azul_marino = '\033[34m'  # Otros elementos
+        fin_color = '\033[0m'  # Para volver al color por defecto
+
+        for fila in self.tablero:
+            for celda in fila:
+                if celda == "B":
+                    print(color_rojo + celda + fin_color, end=" ")
+                elif celda == "X":
+                    print(color_naranja + celda + fin_color, end=" ")
+                elif celda == "a":
+                    print(color_azul_claro + celda + fin_color, end=" ")
+                else:
+                    print(color_azul_marino + celda + fin_color, end=" ")  # Cambio para otros elementos
+            print()  # Nueva línea al final de cada fila
+
+    def print_tab_disp_coloreado(self):
+        """
+        Printea el tablero coloreado con codificacion  ANSI
+        """
+        color_rojo = '\033[91m'  # B
+        color_naranja = '\033[93m'  # X, usando amarillo como naranja
+        color_azul_claro = '\033[96m'  # a
+        color_azul_marino = '\033[34m'  # Otros elementos
+        fin_color = '\033[0m'  # Para volver al color por defecto
+
+        for fila in self.tab_disparos:
+            for celda in fila:
+                if celda == "B":
+                    print(color_rojo + celda + fin_color, end=" ")
+                elif celda == "X":
+                    print(color_naranja + celda + fin_color, end=" ")
+                elif celda == "a":
+                    print(color_azul_claro + celda + fin_color, end=" ")
+                else:
+                    print(color_azul_marino + celda + fin_color, end=" ")  # Cambio para otros elementos
+            print()  # Nueva línea al final de cada fila
 
 class Humano(Jugador):
     """
@@ -140,7 +184,7 @@ class Humano(Jugador):
         """
         acierto = False  # Con esta variable controlamos si hay acierto o no
         while True:  # mientras sigamos acertando, repetiremos
-            print(self.tab_disparos)
+            self.print_tab_disp_coloreado()
             fila = int(input("Fila a disparar? (Entre 0 y 9): "))
             columna = int(input("Columna a disparar? (Entre 0 y 9): "))
             coord_disparo = (fila, columna)
@@ -210,7 +254,7 @@ class Maquina(Jugador):
                     self.tab_disparos[fila, columna] = "a"
                     enemigo.tablero[fila, columna] = "a"
 
-                print(enemigo.tablero)
+                enemigo.print_tablero_coloreado()
                 break  # Salimos del bucle while luego de un disparo, acertado o no
         return acierto  # Retornamos si ha sido un acierto para determinar si se sigue jugando o cambia el turno
 
@@ -278,7 +322,7 @@ class Maquina_de_matar(Jugador):
                     enemigo.tablero[fila, columna] = "a"
                     if not acierto:  # Si no ha habido un acierto, limpia el último acierto
                         self.ultimo_acierto = None
-                print(enemigo.tablero)
+                enemigo.print_tablero_coloreado()
                 break
         return acierto
 
@@ -317,7 +361,7 @@ class Juego:
         self.elegir_dificultad() # Elegimos el nivel de dificulta que tendrá la Maquina
         self.humano.colocar_barcos()
         print("Este es tu tablero")
-        print(self.humano.tablero)
+        self.humano.print_tablero_coloreado()
         self.maquina.colocar_barcos() 
     
         respuesta = int(input("¿Quién quieres que empiece primero: (1)Tú, (2)Máquina, (0)Aleatorio? "))
