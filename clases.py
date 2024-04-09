@@ -316,14 +316,14 @@ class Maquina_de_matar(Jugador):
                             print(f"¡Hundido! Maquina_de_matar ha destrozado el {barco['tipo']}.")
                             self.ultimo_acierto = None  # Restablece el último acierto si el barco está hundido
                         break
-                else:
-                    print(f"{coord_disparo} -> Agua")
-                    self.tab_disparos[fila, columna] = "a"
-                    enemigo.tablero[fila, columna] = "a"
-                    if not acierto:  # Si no ha habido un acierto, limpia el último acierto
-                        self.ultimo_acierto = None
-                enemigo.print_tablero_coloreado()
-                break
+            else:
+                print(f"{coord_disparo} -> Agua")
+                self.tab_disparos[fila, columna] = "a"
+                enemigo.tablero[fila, columna] = "a"
+                if not acierto:  # Si no ha habido un acierto, limpia el último acierto
+                    self.ultimo_acierto = None
+            enemigo.print_tablero_coloreado()
+            break
         return acierto
 
 
